@@ -16,6 +16,10 @@ const schema = {
         title: Joi.string().required(),
         content: Joi.string().required(),
         tags: Joi.array().items(Joi.string())
+    }),
+    getPostsByPeriod: Joi.object({
+        dateFrom: Joi.date().iso().required(),
+        dateTo: Joi.date().iso().greater(Joi.ref('dateFrom')).required()
     })
 }
 const validation = (schemaName) => {

@@ -80,8 +80,23 @@ class PostController {
     async getPostsByPeriod(req, res, next) {
         try {
             const {dateFrom, dateTo} = req.query;
-            const posts = await postService.getPostsByPeriod(dateFrom, dateTo);
+            if (!dateFrom || !dateTo) {
+                return res.status(400).json({ message: "Both dateFrom and dateTo are required." });
+            }
+            const from = new Date(dateFrom);
+            const to = new Date(dateTo);
+
+            if (isNaN(from.getTime()) || isNaN(to.getTime())) {
+                return res.status(400).json({ message: "Invalid date format. Use ISO 8601 (YYYY-MM-DD or full datetime)." });
+            }
+
+            if (from > to) {
+                return res.status(400).json({ message: "dateFrom must be earlier than dateTo." });
+            }
+
+            const posts = await postService.getPostsByPeriod(from, to);
             res.json(posts);
+
         } catch (err) {
             next(err);
         }

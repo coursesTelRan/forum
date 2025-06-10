@@ -13,7 +13,7 @@ router.get('/posts/author/:author', postController.getPostsByAuthor);
 router.patch('/post/:id/comment/:commenter', validate('addComment'), postController.addComment);
 router.delete('/post/:id', postController.deletePost);
 router.get('/posts/tags', postController.getPostsByTags);
-router.get('/posts/period', postController.getPostsByPeriod);
+router.get('/posts/period',validate("getPostsByPeriod"), postController.getPostsByPeriod);
 router.patch('/post/:id', validate('updatePost'), postController.updatePost);
 
 
